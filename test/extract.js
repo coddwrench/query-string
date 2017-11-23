@@ -1,5 +1,5 @@
-import test from 'ava';
-import fn from '../';
+var test = require('ava');
+var fn = require('../dist/index');
 
 test('should extract query string from url', t => {
 	t.is(fn.extract('http://foo.bar/?abc=def&hij=klm'), 'abc=def&hij=klm');

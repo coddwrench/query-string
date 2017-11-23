@@ -1,42 +1,41 @@
-'use strict';
-var strictUriEncode = require('strict-uri-encode');
-var objectAssign = require('object-assign');
-var decodeComponent = require('decode-uri-component');
+import * as strictUriEncode from "strict-uri-encode";
+import * as objectAssign from "object-assign";
+import * as decodeComponent from "decode-uri-component";
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
-		case 'index':
+		case "index":
 			return function (key, value, index) {
 				return value === null ? [
 					encode(key, opts),
-					'[',
+					"[",
 					index,
-					']'
-				].join('') : [
+					"]"
+				].join("") : [
 					encode(key, opts),
-					'[',
+					"[",
 					encode(index, opts),
-					']=',
+					"]=",
 					encode(value, opts)
-				].join('');
+				].join("");
 			};
 
-		case 'bracket':
+		case "bracket":
 			return function (key, value) {
 				return value === null ? encode(key, opts) : [
 					encode(key, opts),
-					'[]=',
+					"[]=",
 					encode(value, opts)
-				].join('');
+				].join("");
 			};
 
 		default:
 			return function (key, value) {
 				return value === null ? encode(key, opts) : [
 					encode(key, opts),
-					'=',
+					"=",
 					encode(value, opts)
-				].join('');
+				].join("");
 			};
 	}
 }
@@ -45,11 +44,11 @@ function parserForArrayFormat(opts) {
 	var result;
 
 	switch (opts.arrayFormat) {
-		case 'index':
+		case "index":
 			return function (key, value, accumulator) {
 				result = /\[(\d*)\]$/.exec(key);
 
-				key = key.replace(/\[\d*\]$/, '');
+				key = key.replace(/\[\d*\]$/, "");
 
 				if (!result) {
 					accumulator[key] = value;
@@ -63,10 +62,10 @@ function parserForArrayFormat(opts) {
 				accumulator[key][result[1]] = value;
 			};
 
-		case 'bracket':
+		case "bracket":
 			return function (key, value, accumulator) {
 				result = /(\[\])$/.exec(key);
-				key = key.replace(/\[\]$/, '');
+				key = key.replace(/\[\]$/, "");
 
 				if (!result) {
 					accumulator[key] = value;
@@ -102,7 +101,7 @@ function encode(value, opts) {
 function keysSorter(input) {
 	if (Array.isArray(input)) {
 		return input.sort();
-	} else if (typeof input === 'object') {
+	} else if (typeof input === "object") {
 		return keysSorter(Object.keys(input)).sort(function (a, b) {
 			return Number(a) - Number(b);
 		}).map(function (key) {
@@ -113,50 +112,44 @@ function keysSorter(input) {
 	return input;
 }
 
-exports.extract = function (str) {
-	var queryStart = str.indexOf('?');
+export function extract(str) {
+	var queryStart = str.indexOf("?");
 	if (queryStart === -1) {
-		return '';
+		return "";
 	}
 	return str.slice(queryStart + 1);
-};
+}
 
-exports.parse = function (str, opts) {
-	opts = objectAssign({arrayFormat: 'none'}, opts);
+export function parse(str, opts) {
+	opts = objectAssign({ arrayFormat: "none" }, opts);
 
 	var formatter = parserForArrayFormat(opts);
+	var result = {};
 
-	// Create an object with no prototype
-	// https://github.com/sindresorhus/query-string/issues/47
-	var ret = Object.create(null);
-
-	if (typeof str !== 'string') {
-		return ret;
+	if (typeof str !== "string") {
+		return result;
 	}
 
-	str = str.trim().replace(/^[?#&]/, '');
+	str = str.trim().replace(/^[?#&]/, "");
 
 	if (!str) {
-		return ret;
+		return result;
 	}
 
-	str.split('&').forEach(function (param) {
-		var parts = param.replace(/\+/g, ' ').split('=');
+	str.split("&").forEach(function (param) {
+		var parts = param.replace(/\+/g, " ").split("=");
 		// Firefox (pre 40) decodes `%3D` to `=`
-		// https://github.com/sindresorhus/query-string/pull/37
 		var key = parts.shift();
-		var val = parts.length > 0 ? parts.join('=') : undefined;
+		var val = parts.length > 0 ? parts.join("=") : undefined;
 
-		// missing `=` should be `null`:
-		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
 		val = val === undefined ? null : decodeComponent(val);
 
-		formatter(decodeComponent(key), val, ret);
+		formatter(decodeComponent(key), val, result);
 	});
 
-	return Object.keys(ret).sort().reduce(function (result, key) {
-		var val = ret[key];
-		if (Boolean(val) && typeof val === 'object' && !Array.isArray(val)) {
+	return Object.keys(result).sort().reduce(function (result, key) {
+		var val = result[key];
+		if (Boolean(val) && typeof val === "object" && !Array.isArray(val)) {
 			// Sort object keys, not values
 			result[key] = keysSorter(val);
 		} else {
@@ -165,24 +158,24 @@ exports.parse = function (str, opts) {
 
 		return result;
 	}, Object.create(null));
-};
+}
 
-exports.stringify = function (obj, opts) {
+export function stringify(obj, opts) {
 	var defaults = {
 		encode: true,
 		strict: true,
-		arrayFormat: 'none'
+		arrayFormat: "none"
 	};
 
 	opts = objectAssign(defaults, opts);
 
-	var formatter = encoderForArrayFormat(opts);
+	var formatter: Function = encoderForArrayFormat(opts);
 
 	return obj ? Object.keys(obj).sort().map(function (key) {
 		var val = obj[key];
 
 		if (val === undefined) {
-			return '';
+			return "";
 		}
 
 		if (val === null) {
@@ -200,11 +193,11 @@ exports.stringify = function (obj, opts) {
 				result.push(formatter(key, val2, result.length));
 			});
 
-			return result.join('&');
+			return result.join("&");
 		}
 
-		return encode(key, opts) + '=' + encode(val, opts);
+		return encode(key, opts) + "=" + encode(val, opts);
 	}).filter(function (x) {
 		return x.length > 0;
-	}).join('&') : '';
-};
+	}).join("&") : "";
+}

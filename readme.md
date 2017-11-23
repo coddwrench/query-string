@@ -1,25 +1,16 @@
-# query-string [![Build Status](https://travis-ci.org/sindresorhus/query-string.svg?branch=master)](https://travis-ci.org/sindresorhus/query-string)
-
 > Parse and stringify URL [query strings](http://en.wikipedia.org/wiki/Query_string)
-
----
-
-<p align="center"><b>🔥 Want to strengthen your core JavaScript skills and master ES6?</b><br>I would personally recommend this awesome <a href="https://ES6.io/friend/AWESOME">ES6 course</a> by Wes Bos. You might also like his <a href="https://ReactForBeginners.com/friend/AWESOME">React course</a>.</p>
-
----
-
 
 ## Install
 
 ```
-$ npm install query-string
+$ npm install query-string-parser
 ```
 
 
 ## Usage
 
 ```js
-const queryString = require('query-string');
+const queryString = require('query-string-parser');
 
 console.log(location.search);
 //=> '?foo=bar'

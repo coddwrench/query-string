@@ -1,22 +1,29 @@
 {
-  "name": "query-string",
-  "version": "5.0.1",
+  "name": "query-string-parser",
+  "version": "0.0.1",
   "description": "Parse and stringify URL query strings",
   "license": "MIT",
-  "repository": "sindresorhus/query-string",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
+  "repository": "https://github.com/coddwrench/query-string-parser.git",
+  "bugs": "https://github.com/coddwrench/query-string-parser/issues",
+  "homepage": "https://github.com/coddwrench/query-string-parser",
+  "author": "Seregin Vadim <codwrench@gmail.com>",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
+    "build": "tsc index.ts -t es3 -m commonjs -d --outDir dist &&  rollup -c rollup.config.ts",
     "test": "xo && ava"
   },
+  "typescript": {
+    "definition": "dist/index.d.ts"
+  },
+  "main": "dist/index.js",
+  "es2015": "index.ts",
+  "umd:main": "dist/index.umd.js",
   "files": [
-    "index.js"
+    "dist",
+    "index.ts",
+    "readme.md"
   ],
   "keywords": [
     "browser",
@@ -34,12 +41,21 @@
     "decode"
   ],
   "dependencies": {
+    "@types/object-assign": "^4.0.30",
     "decode-uri-component": "^0.2.0",
     "object-assign": "^4.1.0",
     "strict-uri-encode": "^1.0.0"
   },
   "devDependencies": {
     "ava": "^0.17.0",
-    "xo": "^0.16.0"
+    "xo": "^0.16.0",
+    "typescript": "^2.6.1",
+    "tslint": "^5.8.0",
+    "tslint-config-prettier": "^1.6.0",
+    "tslint-config-standard": "^7.0.0",
+    "rollup": "^0.50.0",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2"
   }
 }

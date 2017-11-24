@@ -7,7 +7,7 @@
 ## Install
 
 ```
-$ npm install query-string-parser -save
+$ npm install query-string2 -save
 ```
 
 ## Usage

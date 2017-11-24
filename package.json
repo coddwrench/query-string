@@ -1,11 +1,11 @@
 {
   "name": "query-string2",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Parse and stringify URL query strings",
   "license": "MIT",
-  "repository": "https://github.com/coddwrench/query-string-parser.git",
-  "bugs": "https://github.com/coddwrench/query-string-parser/issues",
-  "homepage": "https://github.com/coddwrench/query-string-parser",
+  "repository": "https://github.com/coddwrench/query-string2.git",
+  "bugs": "https://github.com/coddwrench/query-string2/issues",
+  "homepage": "https://github.com/coddwrench/query-string2",
   "author": "Seregin Vadim <codwrench@gmail.com>",
   "engines": {
     "node": ">=0.10.0"

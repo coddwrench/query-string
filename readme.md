@@ -13,7 +13,7 @@ $ npm install query-string-parser -save
 ## Usage
 
 ```js
-const queryString = require('query-string');
+const queryString = require('query-string2');
 
 console.log(location.search);
 //=> '?foo=bar'

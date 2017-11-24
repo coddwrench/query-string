@@ -1,16 +1,19 @@
+> This package is fork ["query strings"](https://github.com/sindresorhus/query-string) 
+> which canceled [issues 47](https://github.com/sindresorhus/query-string/issues/47) because 
+> it is not logical and should be treated differently ant sources are also copied to TypeScript
+
 > Parse and stringify URL [query strings](http://en.wikipedia.org/wiki/Query_string)
 
 ## Install
 
 ```
-$ npm install query-string-parser
+$ npm install query-string-parser -save
 ```
-
 
 ## Usage
 
 ```js
-const queryString = require('query-string-parser');
+const queryString = require('query-string');
 
 console.log(location.search);
 //=> '?foo=bar'
@@ -170,8 +173,3 @@ queryString.stringify({foo: null});
 queryString.stringify({foo: undefined});
 //=> ''
 ```
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

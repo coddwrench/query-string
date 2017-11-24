@@ -16,7 +16,7 @@ test('different types', function (t) {
 	t.is(fn.stringify(0), '');
 });
 
-test('URI encode', t => {
+test('URI encode', function (t) {
 	t.is(fn.stringify({
 		'foo bar': 'baz faz'
 	}), 'foo%20bar=baz%20faz');

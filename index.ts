@@ -2,7 +2,7 @@ import * as strictUriEncode from "strict-uri-encode";
 import * as objectAssign from "object-assign";
 import * as decodeComponent from "decode-uri-component";
 
-function encoderForArrayFormat(opts) {
+function encoderForArrayFormat(opts): (key: string, value: any, index?: number) => string {
 	switch (opts.arrayFormat) {
 		case "index":
 			return function (key, value, index) {
@@ -112,7 +112,7 @@ function keysSorter(input) {
 	return input;
 }
 
-export function extract(str) {
+export function extract(str: string): string {
 	var queryStart = str.indexOf("?");
 	if (queryStart === -1) {
 		return "";
@@ -120,20 +120,28 @@ export function extract(str) {
 	return str.slice(queryStart + 1);
 }
 
-export function parse(str, opts) {
-	opts = objectAssign({ arrayFormat: "none" }, opts);
+export interface ParseOptions {
+	arrayFormat?: "bracket" | "index" | "none";
+}
 
+export interface StringifyOptions extends ParseOptions {
+	strict?: boolean;
+	encode?: boolean;
+}
+
+export function parse<T>(str: string, opts?: ParseOptions): T {
+	opts = objectAssign({ arrayFormat: "none" }, opts);
 	var formatter = parserForArrayFormat(opts);
-	var result = {};
+	var result: { [key: string]: any } = {};
 
 	if (typeof str !== "string") {
-		return result;
+		return <T>result;
 	}
 
 	str = str.trim().replace(/^[?#&]/, "");
 
 	if (!str) {
-		return result;
+		return <T>result;
 	}
 
 	str.split("&").forEach(function (param) {
@@ -147,20 +155,19 @@ export function parse(str, opts) {
 		formatter(decodeComponent(key), val, result);
 	});
 
-	return Object.keys(result).sort().reduce(function (result, key) {
+	return <T>Object.keys(result).sort().reduce(function (obj, key) {
 		var val = result[key];
 		if (Boolean(val) && typeof val === "object" && !Array.isArray(val)) {
 			// Sort object keys, not values
-			result[key] = keysSorter(val);
+			obj[key] = keysSorter(val);
 		} else {
-			result[key] = val;
+			obj[key] = val;
 		}
-
-		return result;
-	}, Object.create(null));
+		return obj;
+	}, {});
 }
 
-export function stringify(obj, opts) {
+export function stringify<T>(obj: T, opts: StringifyOptions): string {
 	var defaults = {
 		encode: true,
 		strict: true,
@@ -171,7 +178,7 @@ export function stringify(obj, opts) {
 
 	var formatter: Function = encoderForArrayFormat(opts);
 
-	return obj ? Object.keys(obj).sort().map(function (key) {
+	return obj ? Object.keys(obj).sort().map((key) => {
 		var val = obj[key];
 
 		if (val === undefined) {

@@ -11,8 +11,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "build": "tsc index.ts -t es3 -m commonjs -d --outDir dist &&  rollup -c rollup.config.ts",
-    "test": "xo && ava"
+    "build": "tsc && rollup -c rollup.config.js",
+    "test": "ava"
   },
   "typescript": {
     "definition": "dist/index.d.ts"

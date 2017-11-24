@@ -118,12 +118,13 @@ test('query strings params including raw `=`', function (t) {
 	});
 });
 
-test('object properties', function (t) {
-	t.falsy(fn.parse().prototype);
-	t.deepEqual(fn.parse('hasOwnProperty=foo'), {
-		hasOwnProperty: 'foo'
-	});
-});
+// In this test, there is no need
+// test('object properties', function (t) {
+// 	t.falsy(fn.parse().prototype);
+// 	t.deepEqual(fn.parse('hasOwnProperty=foo'), {
+// 		hasOwnProperty: 'foo'
+// 	});
+// });
 
 test('query strings having indexed arrays', function (t) {
 	t.deepEqual(fn.parse('foo[0]=bar&foo[1]=baz'), {

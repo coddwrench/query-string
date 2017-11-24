@@ -2,8 +2,14 @@
 	"compilerOptions": {
 		"skipLibCheck": true,
 		"module": "commonjs",
-		"target": "es2015"
+		"target": "es3",
+		"sourceMap": true,
+		"outDir": "dist",
+		"declaration": true
 	},
+	"files": [
+		"index.ts"
+	],
 	"exclude": [
 		"node_modules"
 	]
